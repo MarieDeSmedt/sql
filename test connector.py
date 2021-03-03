@@ -76,81 +76,134 @@ for x in mycursor:
 
 print("___________________________________________")
 
-# # insertion dans commune
-# sql = "INSERT INTO Commune (nb_habitant, distance_agence, nom_commune,cp) VALUES (%s, %s, %s, %s)"
-# val = [
-#     (10000, 10, 'ville1', 59111),
-#     (22222, 22, 'ville2', 59222),
-#     (333, 333, 'ville3', 59003),
-#     (4410222, 124, 'ville4', 59444),
-#     (55, 5, 'ville5', 59557)
-# ]
-#
-# mycursor.executemany(sql, val)
-#
-# mydb.commit()
-#
-# print(mycursor.rowcount, "was inserted in commune.")
-#
-# print("___________________________________________")
-#
-# # insertion dans loyer
-# sql = "INSERT INTO Loyer (type_Logement, mt_loyer, frais) VALUES (%s, %s, %s)"
-# val = [
-#     ('T1', 250, 50),
-#     ('T2', 350, 60),
-#     ('T3', 455, 65),
-#     ('T4', 800, 140),
-#     ('LOF', 1200, 200)
-# ]
-#
-# mycursor.executemany(sql, val)
-#
-# mydb.commit()
-#
-# print(mycursor.rowcount, "was inserted in loyer.")
-#
-# print("___________________________________________")
-#
-# # insertion dans Individu
-# sql = "INSERT INTO Individu(nom, prenom, date_naissance,num_tel1, num_tel2)  VALUES (%s, %s, %s, %s, %s)"
-#
-# val = [
-#     ('dujardin', 'franck', 19580706, '0614251859', "null"),
-#     ('durand', 'jean', 19550602, '0614747578', '0321458595'),
-#     ('dupont', 'jules', None, '0606060606', None),
-#     ('henry', 'jeanette', 19600607, '0707070707', '0320030203'),
-#     ('delattre', 'huguette', 19451102, "null", "null")
-# ]
-#
-# mycursor.executemany(sql, val)
-#
-# mydb.commit()
-#
-# print(mycursor.rowcount, "was inserted in Individu.")
+# insertion dans commune
+sql = "INSERT INTO Commune (nb_habitant, distance_agence, nom_commune,cp) VALUES (%s, %s, %s, %s)"
+val = [
+    (10000, 10, 'ville1', 59111),
+    (22222, 22, 'ville2', 59222),
+    (333, 333, 'ville3', 59003),
+    (4410222, 124, 'ville4', 59444),
+    (55, 5, 'ville5', 59557)
+]
 
+mycursor.executemany(sql, val)
+mydb.commit()
+print(mycursor.rowcount, "was inserted in commune.")
 
-#
-# print("___________________________________________")
-#
-# insertion dans Logement
-# sql = "INSERT INTO Logement (superficie, adresse, id_commune, id_loyer) VALUES (%s, %s, %s, %s)"
-# val = [
-#     (25, '1rue premiere', 1, 7),
-#     (45, '2rue premiere', 1, 8),
-#     (50, None, 3, 9),
-#     (75, '4rue premiere', 3, 9),
-#     (150, '5rue premiere', 4, 10)
-# ]
+print('modifier dans commune')
+mycursor.execute("UPDATE Commune SET nom_commune = 'new_town1' WHERE cp = 59111;")
+result = mycursor.fetchall()
 
-# mycursor.executemany(sql, val)
+print('suppressions dans commune')
+mycursor.execute("DELETE FROM Commune WHERE id_commune>10;")
+result = mycursor.fetchall()
 
-# mydb.commit()
-#
-# print(mycursor.rowcount, "was inserted in Logement.")
-#
-# print("___________________________________________")
-#
+print('affichage du contenu de Commune')
+mycursor.execute("SELECT * FROM Commune")
+
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+
+print("___________________________________________")
+
+# insertion dans loyer
+sql = "INSERT INTO Loyer (type_Logement, mt_loyer, frais) VALUES (%s, %s, %s)"
+val = [
+    ('T1', 250, 50),
+    ('T2', 350, 60),
+    ('T3', 455, 65),
+    ('T4', 800, 140),
+    ('LOF', 1200, 200)
+]
+mycursor.executemany(sql, val)
+mydb.commit()
+print(mycursor.rowcount, "was inserted in Loyer.")
+
+print('modifier dans Loyer')
+mycursor.execute("UPDATE Loyer SET type_Logement = 'T5' WHERE frais = 200;")
+result = mycursor.fetchall()
+
+print('suppressions dans Loyer')
+mycursor.execute("DELETE FROM Loyer WHERE id_loyer>10;")
+result = mycursor.fetchall()
+
+print('affichage du contenu de Loyer')
+mycursor.execute("SELECT * FROM Loyer")
+
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+
+print("___________________________________________")
+
+#insertion dans Individu
+sql = "INSERT INTO Individu(nom, prenom, date_naissance,num_tel1, num_tel2)  VALUES (%s, %s, %s, %s, %s)"
+
+val = [
+    ('dujardin', 'franck', 19580706, '0614251859', "null"),
+    ('durand', 'jean', 19550602, '0614747578', '0321458595'),
+    ('dupont', 'jules', None, '0606060606', None),
+    ('henry', 'jeanette', 19600607, '0707070707', '0320030203'),
+    ('delattre', 'huguette', 19451102, "null", "null")
+]
+
+mycursor.executemany(sql, val)
+
+mydb.commit()
+
+print(mycursor.rowcount, "was inserted in Individu.")
+
+print('modifier dans Individu')
+mycursor.execute("UPDATE Individu SET num_tel2 = '0320506041' WHERE nom = 'delattre';")
+result = mycursor.fetchall()
+
+print('suppressions dans Individu')
+mycursor.execute("DELETE FROM Individu WHERE prenom='jean';")
+result = mycursor.fetchall()
+
+print('affichage du contenu de Individu')
+mycursor.execute("SELECT * FROM Individu")
+
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+
+print("___________________________________________")
+
+#insertion dans Logement
+sql = "INSERT INTO Logement (superficie, adresse, id_commune, id_loyer) VALUES (%s, %s, %s, %s)"
+val = [
+    (25, '1rue premiere', 1, 7),
+    (45, '2rue premiere', 1, 8),
+    (50, None, 3, 9),
+    (75, '4rue premiere', 3, 9),
+    (150, '5rue premiere', 4, 10)
+]
+
+mycursor.executemany(sql, val)
+
+mydb.commit()
+
+print(mycursor.rowcount, "was inserted in Logement.")
+
+print('modifier dans Logement')
+mycursor.execute("UPDATE Logement SET adresse = '30 rue solferino' WHERE adresse IS NULL;")
+result = mycursor.fetchall()
+
+print('suppressions dans Logement')
+mycursor.execute("DELETE FROM Logement WHERE id_commune=4;")
+result = mycursor.fetchall()
+
+print('affichage du contenu de Logement')
+mycursor.execute("SELECT * FROM Logement")
+
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+
+print("___________________________________________")
+
 # insertion dans Location
 sql = "INSERT INTO Location (date_debut, date_fin, id_logement, id_individu) VALUES (%s, %s, %s, %s)"
 val = [
@@ -167,12 +220,36 @@ mydb.commit()
 
 print(mycursor.rowcount, "was inserted in Location.")
 
-
+print('affichage du contenu de Location avant modif')
 mycursor.execute("SELECT * FROM Location")
 
-# fetch all the matching rows
 result = mycursor.fetchall()
-
-# loop through the rows
 for row in result:
     print(row)
+
+print('modifier dans Location')
+mycursor.execute("UPDATE Location SET id_logement = 13 WHERE id_individu = 3;")
+result = mycursor.fetchall()
+
+print('affichage du contenu de Location apres modif')
+mycursor.execute("SELECT * FROM Location")
+
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+
+print('suppressions dans Location')
+mycursor.execute("DELETE FROM Location WHERE id_location>50;")
+result = mycursor.fetchall()
+
+mydb.commit()
+
+print('affichage du contenu de Location apres suppressions')
+mycursor.execute("SELECT * FROM Location")
+
+result = mycursor.fetchall()
+
+for row in result:
+    print(row)
+
+
