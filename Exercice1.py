@@ -52,7 +52,7 @@ mycursor.execute(
     "id_commune SMALLINT UNSIGNED NOT NULL,"
     "id_loyer SMALLINT UNSIGNED NOT NULL,"
     "id_logement SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-    "CONSTRAINT fk_id_commune FOREIGN KEY (id_commune) REFERENCES Commune(id_commune),"
+    "CONSTRAINT fk_id_commune FOREIGN KEY (id_commune) REFERENCES Commune(id_commune) ON DELETE CASCADE,"
     "CONSTRAINT fk_id_loyer FOREIGN KEY (id_loyer) REFERENCES Loyer(id_loyer)"
     ")"
     "ENGINE=InnoDB;"
@@ -65,7 +65,7 @@ mycursor.execute(
     "id_logement SMALLINT UNSIGNED NOT NULL,"
     "id_individu SMALLINT UNSIGNED NOT NULL,"
     "id_location SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-    "CONSTRAINT fk_id_logement FOREIGN KEY (id_logement) REFERENCES Logement(id_logement),"
+    "CONSTRAINT fk_id_logement FOREIGN KEY (id_logement) REFERENCES Logement(id_logement) ON DELETE CASCADE,"
     "CONSTRAINT fk_id_individu FOREIGN KEY (id_individu) REFERENCES Individu(id_individu)"
     ")"
     "ENGINE=InnoDB;"
@@ -288,38 +288,55 @@ for row in result:
 
 mydb.commit()
 
-# mydb.commit()
-#
-# print(mycursor.rowcount,  "tuples ont été insérés :")
-#
-# print('affichage du contenu de Location avant modif')
-# mycursor.execute("SELECT * FROM Location")
-#
-# result = mycursor.fetchall()
-# for row in result:
-#     print(row)
-#
-# print('modifier dans Location')
-# mycursor.execute("UPDATE Location SET id_logement = 13 WHERE id_individu = 3;")
-# result = mycursor.fetchall()
-#
-# print('affichage du contenu de Location apres modif')
-# mycursor.execute("SELECT * FROM Location")
-#
-# result = mycursor.fetchall()
-# for row in result:
-#     print(row)
-#
-# print('suppressions dans Location')
-# mycursor.execute("DELETE FROM Location WHERE id_location>50;")
-# result = mycursor.fetchall()
-#
-# mydb.commit()
-#
-# print('affichage du contenu de Location apres suppressions')
-# mycursor.execute("SELECT * FROM Location")
-#
-# result = mycursor.fetchall()
-#
-# for row in result:
-#     print(row)
+print("_______________________________________________________________________________________________________________")
+print("_________________________________________TEST DELETE ON CASCADE________________________________________________")
+print('')
+print(" afficher les communes existantes :")
+print('')
+mycursor.execute("SELECT * FROM Commune")
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+
+print('')
+print("afficher les logements existants :")
+print('')
+mycursor.execute("SELECT * FROM Logement")
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+
+print('')
+print("afficher les locations existantes :")
+print('')
+mycursor.execute("SELECT * FROM Location")
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+
+print('')
+print("si  je supprime la commune 3, les 2 derniers logements doivent etre supprimés aussi puisque FK_id_commune =3,"
+      " et bien sur les logements liés a ces locations")
+print('')
+mycursor.execute("DELETE FROM Commune WHERE id_commune = 3;")
+result = mycursor.fetchall()
+print('suppressions de la commune id 3:')
+print('')
+mycursor.execute("SELECT * FROM Commune")
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+print('')
+print('affichage des logements restant:')
+print('')
+mycursor.execute("SELECT * FROM Logement")
+result = mycursor.fetchall()
+for row in result:
+    print(row)
+print('')
+print('affichage des locations restantes:')
+print('')
+mycursor.execute("SELECT * FROM Location")
+result = mycursor.fetchall()
+for row in result:
+    print(row)
